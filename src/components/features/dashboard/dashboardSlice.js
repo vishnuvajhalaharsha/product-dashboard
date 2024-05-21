@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { data } from '../data/data'; // Adjust the import path as necessary
+import { data } from '../data/data';
 
 export const fetchData = createAsyncThunk('data/fetchData', async () => {
   const apidata = await new Promise((resolve) => {
     setTimeout(() => {
-        console.log(data,"mock")
       resolve(data);
     }, 1000); 
   });

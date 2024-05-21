@@ -5,6 +5,7 @@ import TableComponent from "../../table/index.jsx";
 import { Box, CircularProgress } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchData } from "./dashboardSlice.js";
+import { columns } from "../../../helpers/utils.js";
 
 const Dashboard = () => {
   const maindata = useSelector((state) => state.data.items);
@@ -17,13 +18,13 @@ const Dashboard = () => {
   }, [dispatch]);
 
   return (
-    <Box sx={{ height: '90vh' }}>
+    <Box sx={{ height: "90vh" }}>
       {status === "succeeded" && (
         <>
           <CardComponent title={"Retail Sales"}>
             <MyChartComponent data={maindata} />
           </CardComponent>
-          <TableComponent data={maindata} />
+          <TableComponent columns={columns} data={maindata[0]?.sales} />
         </>
       )}
       {status === "loading" && (
@@ -40,7 +41,7 @@ const Dashboard = () => {
         </Box>
       )}
       {status === "failed" && (
-        <Box sx={{ color: 'red', textAlign: 'center' }}>
+        <Box sx={{ color: "red", textAlign: "center" }}>
           <p>Error: {error}</p>
         </Box>
       )}

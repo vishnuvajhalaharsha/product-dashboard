@@ -7,19 +7,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
+import {formatAsDollar} from "../../helpers/utils"
 
-const TableComponent = ({ data }) => {
-  if (data.length === 0 || !data[0].sales) {
+const TableComponent = ({ data, columns }) => {
+  if (data.length === 0 || !data) {
     return <div>No data available</div>;
   }
-  function formatAsDollar(amount) {
-    const formatter = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-
-    return formatter.format(amount);
-  }
+ 
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -32,13 +26,8 @@ const TableComponent = ({ data }) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const columns = [
-    { id: 'weekEnding', label: 'Week Ending' },
-    { id: 'retailSales', label: 'Retail Sales', align: 'right' },
-    { id: 'wholesaleSales', label: 'Wholesale Sales', align: 'right' },
-    { id: 'unitsSold', label: 'Units Sold', align: 'right' },
-    { id: 'retailerMargin', label: 'Retailer Margin', align: 'right' }
-  ];
+ 
+  console.log(data,'data')
 
   return (
     <Paper sx={{marginTop:2}}>
@@ -54,7 +43,7 @@ const TableComponent = ({ data }) => {
           </TableRow>
           </TableHead>
           <TableBody>
-          {data[0].sales.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map((row) => (
+          {data.slice(page * rowsPerPage, page* rowsPerPage + rowsPerPage).map((row) => (
             <TableRow key={row.weekEnding}>
               {columns.map((column) => (
                 <TableCell key={column.id} align={column.align || 'left'}>
@@ -71,7 +60,7 @@ const TableComponent = ({ data }) => {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={data[0].sales.length}
+        count={data.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
